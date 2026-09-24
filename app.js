@@ -144,7 +144,7 @@ function renderModels(c){
 }
 function renderValidation(c){
   const models=[['Decision Tree','dt'],['Random Forest','rf'],['XGBoost','xgb']];
-  $('#validation-grid').innerHTML=models.map(m=>{const p=predictionFor(c,m[1]);const d=finalFor(c,m[1]);const f=finalLevel(c,m[1]);const reason=d==='APPLY'?`Predicted level ${p} passes the recorded final decision.`:d==='FALLBACK'?`Predicted level ${p} triggers fallback under the recorded replay rule.`:`Predicted level ${p} did not pass the final validation path.`;return `<div class="validation-card"><div class="validation-top"><div class="model-name">${m[0]}</div><span class="decision-pill ${outcomeClass(d)}">${d}</span></div><div class="validation-text">Prediction: ML-KEM-${p}<br/>${f?`Final level: ML-KEM-${f}<br/>`:''}${reason}</div></div>`}).join('');
+  $('#validation-grid').innerHTML=models.map(m=>{const p=predictionFor(c,m[1]);const d=finalFor(c,m[1]);const f=finalLevel(c,m[1]);const reason=d==='APPLY'?`Predicted level ${p} passes the recorded final decision.`:d==='FALLBACK'?`Predicted level ${p} triggers fallback under the recorded replay rule.`:`Predicted level ${p} did not pass the final validation path.`;return `<div class="validation-card"><div class="validation-top"><div class="model-name">${m[0]}</div></div><div class="validation-text">Prediction: ML-KEM-${p}<br/>${f?`Final level: ML-KEM-${f}<br/>`:''}${reason}</div></div>`}).join('');
 }
 function renderDecision(c){
   const dts=[finalFor(c,'dt'),finalFor(c,'rf'),finalFor(c,'xgb')];
