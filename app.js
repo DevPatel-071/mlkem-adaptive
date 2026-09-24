@@ -231,7 +231,6 @@ function renderEngine(){
 function showView(id){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active-view')); document.getElementById(id).classList.add('active-view');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
-  $('#page-title').textContent={dashboard:'Adaptive Post-Quantum Security Dashboard',engine:'Adaptive Engine',models:'Model Comparison',cases:`All ${CASES.length} Replay Cases`}[id];
   document.querySelector('.top-actions').style.display = id === 'dashboard' ? 'flex' : 'none';
   if(id==='cases') populateCaseView(); if(id==='models') renderModelsView();
   window.scrollTo({top:0,behavior:'smooth'});
