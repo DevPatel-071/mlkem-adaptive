@@ -239,8 +239,23 @@ function showView(id){
 
 document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>showView(n.dataset.view)));
 $('#run-btn').addEventListener('click',animateRun);
-$('#case-select').addEventListener('change',()=>{selectedCandidate=null;});
-$('#next-btn').addEventListener('click',()=>{const i=CASES.findIndex(c=>c.scenario_id===currentCase().scenario_id); const next=CASES[(i+1)%CASES.length]; $('#case-select').value=next.scenario_id; selectedCandidate=null; renderAll(next)});
+$('#case-select').addEventListener('change', () => {
+  selectedCandidate = null;
+  const emptyState = document.getElementById('empty-state');
+  const dashContent = document.getElementById('dashboard-content');
+  if (emptyState) emptyState.style.display = 'flex';
+  if (dashContent) dashContent.style.display = 'none';
+});
+$('#next-btn').addEventListener('click', () => {
+  const i = CASES.findIndex(c => c.scenario_id === currentCase().scenario_id);
+  const next = CASES[(i+1) % CASES.length];
+  $('#case-select').value = next.scenario_id;
+  selectedCandidate = null;
+  const emptyState = document.getElementById('empty-state');
+  const dashContent = document.getElementById('dashboard-content');
+  if (emptyState) emptyState.style.display = 'flex';
+  if (dashContent) dashContent.style.display = 'none';
+});
 $('#case-search').addEventListener('input',populateCaseView); $('#security-filter').addEventListener('change',populateCaseView); $('#result-filter').addEventListener('change',populateCaseView);
 
 renderCaseSelect(); renderEngine(); renderModelsView(); populateCaseView();
