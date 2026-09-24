@@ -172,7 +172,7 @@ window.simulateConfigApply = function(configName, outcome) {
   overlay.className = 'loading-screen';
   overlay.style.opacity = '0';
   overlay.style.display = 'flex';
-  overlay.innerHTML = \`
+  overlay.innerHTML = `
     <div class="loading-content" style="text-align:center;">
       <div class="loading-graphic" style="margin: 0 auto 30px;">
         <div class="cyber-cube" style="animation: pulse 1s infinite alternate;">
@@ -186,7 +186,7 @@ window.simulateConfigApply = function(configName, outcome) {
       <h2 style="color:var(--text); font-size:24px; margin-bottom:10px;">Applying Configuration...</h2>
       <p style="color:var(--muted);">${configName}</p>
     </div>
-  \`;
+  `;
   document.body.appendChild(overlay);
   
   requestAnimationFrame(() => {
@@ -200,16 +200,16 @@ window.simulateConfigApply = function(configName, outcome) {
     const rgb = isReject ? '255, 77, 94' : '24, 217, 255';
     const icon = isReject ? '<path d="M18 6L6 18M6 6l12 12"/>' : '<path d="M20 6L9 17l-5-5"/>';
     
-    overlay.innerHTML = \`
+    overlay.innerHTML = `
       <div class="loading-content" style="text-align:center;">
-        <div style="width:80px;height:80px;border-radius:50%;background:rgba(\${rgb},0.1);color:\${color};display:flex;align-items:center;justify-content:center;margin:0 auto 30px; border: 1px solid rgba(\${rgb},0.3); box-shadow: 0 0 20px rgba(\${rgb},0.2);">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">\${icon}</svg>
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(${rgb},0.1);color:${color};display:flex;align-items:center;justify-content:center;margin:0 auto 30px; border: 1px solid rgba(${rgb},0.3); box-shadow: 0 0 20px rgba(${rgb},0.2);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icon}</svg>
         </div>
-        <h2 style="color:var(--text); font-size:28px; margin-bottom:12px;">\${isReject ? 'Configuration Rejected' : 'Configuration Applied'}</h2>
-        <p style="color:\${color}; font-size:18px; font-weight:600;">\${configName}</p>
+        <h2 style="color:var(--text); font-size:28px; margin-bottom:12px;">${isReject ? 'Configuration Rejected' : 'Configuration Applied'}</h2>
+        <p style="color:${color}; font-size:18px; font-weight:600;">${configName}</p>
         <button class="ghost-btn" style="margin-top:30px;" onclick="this.closest('.loading-screen').remove()">Close</button>
       </div>
-    \`;
+    `;
   }, 1500);
 };
 function caseReason(c){
