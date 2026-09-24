@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive ML-KEM | Research Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=10" />
+  <script defer src="app.js?v=10"></script>
+</head>
+<body>
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-content">
+      <h1 class="loading-title">Adaptive <span class="cyan-text">ML-KEM</span></h1>
+      <h2 class="loading-subtitle">Post-Quantum Security</h2>
+      <p class="loading-tagline">Preparing for a Quantum-Safe Future</p>
+      
+      <div class="loading-graphic">
+        <div class="cyber-cube">
+          <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <rect x="9" y="9" width="6" height="7" rx="1"/>
+            <circle cx="12" cy="11.5" r="1"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="progress-container">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="loading-progress"></div>
+        </div>
+        <span class="progress-text" id="loading-pct">0%</span>
+      </div>
+      <div class="loading-status" id="loading-status-text">INITIALIZING SECURITY MODELS...</div>
+      
+      <div class="loading-dots">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div>
+          <div class="brand-title">Adaptive ML-KEM</div>
+          <div class="brand-sub">Resource-Aware PQC</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="engine">Adaptive Engine</button>
+        <button class="nav-item" data-view="models">Model Comparison</button>
+        <button class="nav-item" data-view="cases">All 60 Cases</button>
+      </nav>
+
+      <div class="sidebar-stats">
+        <div class="mini-stat"><b id="nav-case-count">60</b><span>Replay cases</span></div>
+        <div class="mini-stat"><b>7</b><span>Decision stages</span></div>
+      </div>
+
+      <div class="sidebar-foot">
+        <span class="status-dot"></span>
+        <span>Offline Replay Mode</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Adaptive Post-Quantum Security Dashboard</h1>
+          <div class="subline">60 prepared hardware-equivalent replay scenarios · ML-KEM-512 / 768 / 1024</div>
+        </div>
+        <div class="top-actions">
+          <div class="case-picker">
+            <label for="case-select">Scenario</label>
+            <select id="case-select" aria-label="Select scenario"></select>
+          </div>
+          <button class="ghost-btn" id="next-btn" title="Go to next scenario">Next Case</button>
+          <button class="primary-btn" id="run-btn">Run Scenario</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view active-view">
+        <div class="workspace">
+
+          <div id="empty-state" style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; height:65vh; color: var(--muted); text-align:center;">
+            <svg style="width:64px;height:64px;margin-bottom:20px;opacity:0.3;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 9l3 3-3 3m5 0h3M4 15V9a2 2 0 012-2h12a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2z"/></svg>
+            <h3 style="font-size:24px; font-weight:600; color:var(--text); margin-bottom:8px;">System Ready</h3>
+            <p style="font-size:14px; max-width:400px; line-height:1.6;">Please select a scenario from the top bar and click <strong style="color:var(--accent)">Run Scenario</strong> to evaluate the security configuration.</p>
+          </div>
+
+          <div class="dashboard-content" id="dashboard-content" style="display:none;">
+            <div class="hero-grid">
+              <div class="hero-card accent-border" id="stage-decision">
+                <div class="eyebrow">Final Configuration Decision</div>
+                <div class="decision-row">
+                  <div>
+                    <div class="decision-value" id="hero-decision">ML-KEM-512</div>
+                    <div class="muted" id="hero-reason">Security-compliant and resource-feasible</div>
+                  </div>
+                  <div class="decision-badge" id="hero-badge">APPLY</div>
+                </div>
+                <div class="pipeline-mini">
+                  <span>Monitor</span><b>→</b><span>Assess</span><b>→</b><span>Filter</span><b>→</b><span>Evaluate</span><b>→</b><span>ML</span><b>→</b><span>Validate</span>
+                </div>
+              </div>
+              <div class="stat-card" id="stage-security">
+                <div class="stat-label">Required Security</div>
+                <div class="stat-value" id="stat-level">Level 1</div>
+                <div class="stat-note" id="stat-score">Security score 1.00</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Battery</div>
+                <div class="stat-value" id="stat-battery">98%</div>
+                <div class="progress"><span id="battery-bar"></span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Available RAM</div>
+                <div class="stat-value"><span id="stat-ram">220</span> KB</div>
+                <div class="stat-note">Hardware-equivalent input</div>
+              </div>
+            </div>
+
+            <section class="panel" id="stage-resource">
+              <div class="panel-head"><div><h2>01 · Resource Monitoring</h2><div class="panel-sub">The input state used by the adaptive engine</div></div><span class="chip">Replay Input</span></div>
+              <div class="resource-grid" id="resource-grid"></div>
+            </section>
+
+            <section class="section-grid">
+              <div class="panel" id="stage-security-detail">
+                <div class="panel-head"><div><h2>02 · Security Requirement</h2><div class="panel-sub">Minimum security level before resource/ML selection</div></div><span class="chip">Policy Engine</span></div>
+                <div class="security-score-box">
+                  <div class="score-circle"><span id="score-circle">1.0</span></div>
+                  <div>
+                    <div class="score-title" id="score-title">Low security requirement</div>
+                    <div class="muted" id="security-profile-text">Profile: LOW</div>
+                  </div>
+                </div>
+                <div class="factor-list" id="factor-list"></div>
+              </div>
+
+              <div class="panel" id="stage-filter">
+                <div class="panel-head"><div><h2>03 · Security Filter</h2><div class="panel-sub">Candidates below the minimum level are blocked first</div></div><span class="chip">Hard constraint</span></div>
+                <div class="filter-summary" id="filter-summary"></div>
+              </div>
+            </section>
+
+            <section class="panel" id="stage-eval">
+              <div class="panel-head"><div><h2>04 · Resource Cost Evaluation</h2><div class="panel-sub">Benchmark profile replay used until ESP32 measurements are available</div></div><span class="chip">Modelled benchmark</span></div>
+              <div class="candidate-grid" id="candidate-grid"></div>
+            </section>
+
+            <section class="panel" id="stage-ml">
+              <div class="panel-head"><div><h2>05 · ML Prediction</h2><div class="panel-sub">Decision Tree · Random Forest · XGBoost</div></div><span class="chip">Three-model comparison</span></div>
+              <div class="model-grid" id="model-grid"></div>
+            </section>
+
+            <section class="panel" id="stage-validation">
+              <div class="panel-head"><div><h2>06 · Final Validation</h2><div class="panel-sub">A model recommendation cannot bypass security constraints</div></div><span class="chip">Safety layer</span></div>
+              <div class="validation-grid" id="validation-grid"></div>
+            </section>
+
+            <section class="panel" id="stage-decision-detail">
+              <div class="panel-head"><div><h2>07 · Configuration Output</h2><div class="panel-sub">The result the system would expose to the application</div></div><span class="chip">APPLY / FALLBACK / REJECT</span></div>
+              <div class="decision-output" id="decision-output"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="engine" class="view">
+        <div class="page-section-title"><div><div class="eyebrow">Decision Pipeline</div><h2>Adaptive Engine</h2></div></div>
+        <div class="engine-grid" id="engine-grid"></div>
+        <div class="panel"><div class="panel-head"><div><h2>Final Validation Rules</h2><div class="panel-sub">Safety checks before any configuration is applied</div></div><span class="chip">Safety Layer</span></div><div class="rules" id="rules"></div></div>
+      </section>
+
+      <section id="models" class="view">
+        <div class="page-section-title"><div><div class="eyebrow">Prototype Evaluation</div><h2>Model Comparison</h2></div></div>
+        <div class="comparison-cards" id="comparison-cards"></div>
+        <div class="panel"><div class="panel-head"><div><h2>Disagreement &amp; Fallback Cases</h2><div class="panel-sub">Cases where model outputs differ or a fallback was triggered</div></div><span class="chip" id="disagreement-chip">—</span></div><div class="table-wrap"><table><thead><tr><th>Case</th><th>Security</th><th>Required</th><th>DT</th><th>RF</th><th>XGB</th><th>RF / Final</th></tr></thead><tbody id="disagreement-body"></tbody></table></div></div>
+      </section>
+
+      <section id="cases" class="view">
+        <div class="page-section-title"><div><div class="eyebrow">Presentation Ready</div><h2>All 60 Replay Cases</h2></div></div>
+        <div class="case-toolbar panel">
+          <input id="case-search" class="search-input" type="search" placeholder="Search case ID, security or resource profile…" />
+          <select id="security-filter"><option value="ALL">All security profiles</option><option>LOW</option><option>MODERATE</option><option>HIGH</option><option>OTHER</option></select>
+          <select id="result-filter"><option value="ALL">All outcomes</option><option value="APPLY">Has APPLY</option><option value="FALLBACK">Has FALLBACK</option><option value="REJECT">All rejected</option><option value="DISAGREE">Model disagreement</option></select>
+        </div>
+        <div class="cases-count" id="cases-count"></div>
+        <div class="all-case-grid" id="all-case-grid"></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
