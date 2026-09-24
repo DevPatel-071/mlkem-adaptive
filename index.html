@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=13" />
-  <script defer src="app.js?v=13"></script>
+  <link rel="stylesheet" href="styles.css?v=14" />
+  <script defer src="app.js?v=14"></script>
 </head>
 <body>
   <div id="loading-screen" class="loading-screen">
@@ -174,19 +174,16 @@
       </section>
 
       <section id="engine" class="view">
-        <div class="page-section-title"><div><div class="eyebrow">Decision Pipeline</div><h2>Adaptive Engine</h2></div></div>
         <div class="engine-grid" id="engine-grid"></div>
         <div class="panel"><div class="panel-head"><div><h2>Final Validation Rules</h2><div class="panel-sub">Safety checks before any configuration is applied</div></div><span class="chip">Safety Layer</span></div><div class="rules" id="rules"></div></div>
       </section>
 
       <section id="models" class="view">
-        <div class="page-section-title"><div><div class="eyebrow">Prototype Evaluation</div><h2>Model Comparison</h2></div></div>
         <div class="comparison-cards" id="comparison-cards"></div>
         <div class="panel"><div class="panel-head"><div><h2>Disagreement &amp; Fallback Cases</h2><div class="panel-sub">Cases where model outputs differ or a fallback was triggered</div></div><span class="chip" id="disagreement-chip">—</span></div><div class="table-wrap"><table><thead><tr><th>Case</th><th>Security</th><th>Required</th><th>DT</th><th>RF</th><th>XGB</th><th>RF / Final</th></tr></thead><tbody id="disagreement-body"></tbody></table></div></div>
       </section>
 
       <section id="cases" class="view">
-        <div class="page-section-title"><div><div class="eyebrow">Presentation Ready</div><h2>All 65 Replay Cases</h2></div></div>
         <div class="case-toolbar panel">
           <input id="case-search" class="search-input" type="search" placeholder="Search case ID, security or resource profile…" />
           <select id="security-filter"><option value="ALL">All security profiles</option><option>LOW</option><option>MODERATE</option><option>HIGH</option><option>OTHER</option></select>
