@@ -153,8 +153,65 @@ function renderDecision(c){
   const selected=applied?`ML-KEM-${Number(applied)}`:finalOutcome==='REJECT'?'No configuration applied':'Fallback path';
   $('#hero-decision').textContent=selected; $('#hero-reason').textContent=caseReason(c);
   const badge=$('#hero-badge');badge.textContent=finalOutcome;badge.className=`decision-badge ${outcomeClass(finalOutcome)}`;
-  $('#decision-output').innerHTML=`<div><div class="decision-main ${outcomeClass(finalOutcome)}">${selected}</div><div class="decision-meta">${c.scenario_id} · ${friendlyName(c)} · security requirement ${c.required_security_level}</div></div><div class="decision-meta">Recorded model outputs: DT ${finalFor(c,'dt')} · RF ${finalFor(c,'rf')} · XGB ${finalFor(c,'xgb')}</div>`;
+  
+  const btnClass = finalOutcome === 'REJECT' ? 'ghost-btn' : 'primary-btn';
+  const btnText = finalOutcome === 'REJECT' ? 'Reject Configuration' : 'Apply Configuration';
+  
+  $('#decision-output').innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap; gap:16px;">
+      <div>
+        <div class="decision-main ${outcomeClass(finalOutcome)}">${selected}</div>
+        <div class="decision-meta">${c.scenario_id} · ${friendlyName(c)} · security requirement ${c.required_security_level}</div>
+      </div>
+      <button class="${btnClass}" onclick="simulateConfigApply('${selected}', '${finalOutcome}')">${btnText}</button>
+    </div>
+    <div class="decision-meta" style="margin-top:16px;">Recorded model outputs: DT ${finalFor(c,'dt')} · RF ${finalFor(c,'rf')} · XGB ${finalFor(c,'xgb')}</div>`;
 }
+
+window.simulateConfigApply = function(configName, outcome) {
+  const overlay = document.createElement('div');
+  overlay.className = 'loading-screen';
+  overlay.style.opacity = '0';
+  overlay.style.display = 'flex';
+  overlay.innerHTML = \`
+    <div class="loading-content" style="text-align:center;">
+      <div class="loading-graphic" style="margin: 0 auto 30px;">
+        <div class="cyber-cube" style="animation: pulse 1s infinite alternate;">
+           <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <rect x="9" y="9" width="6" height="7" rx="1"/>
+            <circle cx="12" cy="11.5" r="1"/>
+          </svg>
+        </div>
+      </div>
+      <h2 style="color:var(--text); font-size:24px; margin-bottom:10px;">Applying Configuration...</h2>
+      <p style="color:var(--muted);">${configName}</p>
+    </div>
+  \`;
+  document.body.appendChild(overlay);
+  
+  requestAnimationFrame(() => {
+    overlay.style.transition = 'opacity 0.3s';
+    overlay.style.opacity = '1';
+  });
+
+  setTimeout(() => {
+    const isReject = outcome === 'REJECT';
+    const color = isReject ? 'var(--danger)' : 'var(--accent)';
+    const rgb = isReject ? '255, 77, 94' : '24, 217, 255';
+    const icon = isReject ? '<path d="M18 6L6 18M6 6l12 12"/>' : '<path d="M20 6L9 17l-5-5"/>';
+    
+    overlay.innerHTML = \`
+      <div class="loading-content" style="text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(\${rgb},0.1);color:\${color};display:flex;align-items:center;justify-content:center;margin:0 auto 30px; border: 1px solid rgba(\${rgb},0.3); box-shadow: 0 0 20px rgba(\${rgb},0.2);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">\${icon}</svg>
+        </div>
+        <h2 style="color:var(--text); font-size:28px; margin-bottom:12px;">\${isReject ? 'Configuration Rejected' : 'Configuration Applied'}</h2>
+        <p style="color:\${color}; font-size:18px; font-weight:600;">\${configName}</p>
+        <button class="ghost-btn" style="margin-top:30px;" onclick="this.closest('.loading-screen').remove()">Close</button>
+      </div>
+    \`;
+  }, 1500);
+};
 function caseReason(c){
   if(c.scenario_id==='C013') return 'RF recommends 768 while Level 5 is required; final validation rejects that recommendation.';
   if(c.scenario_id==='C035') return 'RF takes the fallback path while DT and XGBoost remain on the direct recommendation path.';
