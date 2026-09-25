@@ -233,7 +233,8 @@ function animateRun(){
   const c = currentCase();
   selectedCandidate = null;
   const btn = $('#run-btn');
-  const dashContent = document.querySelector('.dashboard-content');
+  const dashContent = document.getElementById('dashboard-content');
+  const preRun = document.getElementById('pre-run-dashboard');
   
   if (btn) {
     btn.disabled = true;
@@ -242,9 +243,11 @@ function animateRun(){
   }
   
   if (dashContent) dashContent.classList.add('processing');
+  if (preRun) preRun.classList.add('processing');
 
   setTimeout(() => {
     if (dashContent) dashContent.classList.remove('processing');
+    if (preRun) preRun.classList.remove('processing');
     if (btn) {
       btn.disabled = false;
       btn.innerHTML = `Run Scenario`;
@@ -268,7 +271,11 @@ function populateCaseView(){
     const disagree=modelDisagree(c)?'<span class="tag-small">MODEL DISAGREEMENT</span>':'';
     return `<article class="all-case" data-id="${c.scenario_id}"><div class="all-case-top"><div><div class="case-id">${c.scenario_id}</div><div class="case-title">${friendlyName(c)}</div></div><span class="decision-pill ${outcomeClass(outcome)}">${outcome}</span></div><div class="case-meta"><span class="tag-small">Level ${c.required_security_level}</span><span class="tag-small">B ${c.battery_pct}%</span><span class="tag-small">RAM ${c.ram_kb} KB</span>${disagree}</div><div class="all-case-bottom"><span>DT ${c.dt_prediction} · RF ${c.rf_prediction} · XGB ${c.xgb_prediction}</span><span>${c.resource_profile}</span></div></article>`
   }).join('');
-  document.querySelectorAll('.all-case').forEach(el=>el.addEventListener('click',()=>{$('#case-select').value=el.dataset.id;selectedCandidate=null;showView('dashboard')}));
+  document.querySelectorAll('.all-case').forEach(el=>el.addEventListener('click',()=>{
+    $('#case-select').value=el.dataset.id;
+    $('#case-select').dispatchEvent(new Event('change'));
+    showView('dashboard');
+  }));
 }
 function renderModelsView(){
   const stats=['dt','rf','xgb'].map(k=>{const name=k==='dt'?'Decision Tree':k==='rf'?'Random Forest':'XGBoost'; const apply=CASES.filter(c=>finalFor(c,k)==='APPLY').length; const fallback=CASES.filter(c=>finalFor(c,k)==='FALLBACK').length; const reject=CASES.filter(c=>finalFor(c,k)==='REJECT').length; const s512=CASES.filter(c=>Number(finalLevel(c,k))===512).length; const s768=CASES.filter(c=>Number(finalLevel(c,k))===768).length; const s1024=CASES.filter(c=>Number(finalLevel(c,k))===1024).length; return [name,apply,fallback,reject,s512,s768,s1024]});
@@ -313,17 +320,7 @@ $('#next-btn').addEventListener('click', () => {
   const i = CASES.findIndex(c => c.scenario_id === currentCase().scenario_id);
   const next = CASES[(i+1) % CASES.length];
   $('#case-select').value = next.scenario_id;
-  selectedCandidate = null;
-  const emptyState = document.getElementById('empty-state');
-  const dashContent = document.getElementById('dashboard-content');
-  if (emptyState) emptyState.style.display = 'flex';
-  if (dashContent) dashContent.style.display = 'none';
-
-  const c = currentCase();
-  renderResource(c);
-  renderSecurity(c);
-  const preRun = document.getElementById('pre-run-dashboard');
-  if (preRun) preRun.style.display = 'block';
+  $('#case-select').dispatchEvent(new Event('change'));
 });
 $('#case-search').addEventListener('input',populateCaseView); $('#security-filter').addEventListener('change',populateCaseView); $('#result-filter').addEventListener('change',populateCaseView);
 
