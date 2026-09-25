@@ -22,8 +22,8 @@ let selectedCandidate=null;
 
 function currentCase(){
   const val=$('#case-select').value;
-  if (!val) return CASES[0]; // fallback safely
-  return CASES.find(c=>c.scenario_id === val) || CASES[0];
+  if (!val) return null;
+  return CASES.find(c=>c.scenario_id === val) || null;
 }
 function friendlyName(c){
   return `${c.security_profile} • ${c.resource_profile}`;
@@ -95,6 +95,10 @@ function stageDetails(c){
 function renderStageRail(activeIndex=7, running=false){
   if (!$('#stage-list')) return;
   const c=currentCase();
+  if (!c) {
+    $('#stage-list').innerHTML='';
+    return;
+  }
   const details=stageDetails(c);
   $('#stage-list').innerHTML=STAGES.map((s,i)=>{
     const cls=i<activeIndex?'done':(running && i===activeIndex?'running':'');
@@ -231,6 +235,7 @@ function renderAll(c){
 
 function animateRun(){
   const c = currentCase();
+  if (!c) return;
   selectedCandidate = null;
   const btn = $('#run-btn');
   const dashContent = document.getElementById('dashboard-content');
@@ -311,15 +316,23 @@ $('#case-select').addEventListener('change', () => {
   if (dashContent) dashContent.style.display = 'none';
   
   const c = currentCase();
-  renderResource(c);
-  renderSecurity(c);
   const preRun = document.getElementById('pre-run-dashboard');
-  if (preRun) preRun.style.display = 'block';
+  if (c) {
+    renderResource(c);
+    renderSecurity(c);
+    if (preRun) preRun.style.display = 'block';
+  } else {
+    if (preRun) preRun.style.display = 'none';
+  }
 });
 $('#next-btn').addEventListener('click', () => {
-  const i = CASES.findIndex(c => c.scenario_id === currentCase().scenario_id);
-  const next = CASES[(i+1) % CASES.length];
-  $('#case-select').value = next.scenario_id;
+  let c = currentCase();
+  if (!c) c = CASES[0];
+  else {
+    const i = CASES.findIndex(x => x.scenario_id === c.scenario_id);
+    c = CASES[(i+1) % CASES.length];
+  }
+  $('#case-select').value = c.scenario_id;
   $('#case-select').dispatchEvent(new Event('change'));
 });
 $('#case-search').addEventListener('input',populateCaseView); $('#security-filter').addEventListener('change',populateCaseView); $('#result-filter').addEventListener('change',populateCaseView);
