@@ -117,10 +117,8 @@ function renderStageRail(activeIndex=7, running=false){
 function renderResource(c){
   const items=[['Battery',`${c.battery_pct}%`],['CPU Utilization',`${c.cpu_pct}%`],['Available RAM',`${c.ram_kb} KB`],['Network Quality',Number(c.network_quality).toFixed(2)],['Latency',`${c.latency_ms} ms`],['Packet Loss',`${c.packet_loss_pct}%`]];
   $('#resource-grid').innerHTML=items.map(x=>`<div class="metric"><div class="metric-label">${x[0]}</div><div class="metric-value">${x[1]}</div></div>`).join('');
-  $('#stat-battery').textContent=`${c.battery_pct}%`; $('#stat-ram').textContent=c.ram_kb; $('#battery-bar').style.width=`${Math.max(0,Math.min(100,c.battery_pct))}%`;
 }
 function renderSecurity(c){
-  $('#stat-level').textContent=`Level ${c.required_security_level}`; $('#stat-score').textContent=`Security score ${Number(c.security_score).toFixed(2)}`;
   $('#score-circle').textContent=Number(c.security_score).toFixed(2);
   $('#score-title').textContent=`${requiredName(c.required_security_level)} security requirement`;
   $('#security-profile-text').textContent=`Profile: ${c.security_profile}`;
@@ -155,8 +153,6 @@ function renderDecision(c){
   const finalOutcome=dts.includes('APPLY')?'APPLY':dts.includes('FALLBACK')?'FALLBACK':'REJECT';
   const applied=(c.dt_final||c.rf_final||c.xgb_final);
   const selected=applied?`ML-KEM-${Number(applied)}`:finalOutcome==='REJECT'?'No configuration applied':'Fallback path';
-  $('#hero-decision').textContent=selected; $('#hero-reason').textContent=caseReason(c);
-  const badge=$('#hero-badge');badge.textContent=finalOutcome;badge.className=`decision-badge ${outcomeClass(finalOutcome)}`;
   
   const btnClass = finalOutcome === 'REJECT' ? 'ghost-btn' : 'primary-btn';
   const btnText = finalOutcome === 'REJECT' ? 'Reject Configuration' : 'Apply Configuration';
