@@ -302,6 +302,12 @@ $('#case-select').addEventListener('change', () => {
   const dashContent = document.getElementById('dashboard-content');
   if (emptyState) emptyState.style.display = 'flex';
   if (dashContent) dashContent.style.display = 'none';
+  
+  const c = currentCase();
+  renderResource(c);
+  renderSecurity(c);
+  const preRun = document.getElementById('pre-run-dashboard');
+  if (preRun) preRun.style.display = 'block';
 });
 $('#next-btn').addEventListener('click', () => {
   const i = CASES.findIndex(c => c.scenario_id === currentCase().scenario_id);
@@ -312,10 +318,23 @@ $('#next-btn').addEventListener('click', () => {
   const dashContent = document.getElementById('dashboard-content');
   if (emptyState) emptyState.style.display = 'flex';
   if (dashContent) dashContent.style.display = 'none';
+
+  const c = currentCase();
+  renderResource(c);
+  renderSecurity(c);
+  const preRun = document.getElementById('pre-run-dashboard');
+  if (preRun) preRun.style.display = 'block';
 });
 $('#case-search').addEventListener('input',populateCaseView); $('#security-filter').addEventListener('change',populateCaseView); $('#result-filter').addEventListener('change',populateCaseView);
 
 renderCaseSelect(); renderEngine(); renderModelsView(); populateCaseView();
+const initCase = currentCase();
+if (initCase) {
+  renderResource(initCase);
+  renderSecurity(initCase);
+  const preRun = document.getElementById('pre-run-dashboard');
+  if (preRun) preRun.style.display = 'block';
+}
 $('#nav-case-count').textContent=CASES.length;
 
 // Loading Screen Logic

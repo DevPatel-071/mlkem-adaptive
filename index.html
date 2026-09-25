@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=21" />
-  <script defer src="app.js?v=21"></script>
+  <link rel="stylesheet" href="styles.css?v=22" />
+  <script defer src="app.js?v=22"></script>
 </head>
 <body>
   <div id="loading-screen" class="loading-screen">
@@ -93,10 +93,29 @@
       <section id="dashboard" class="view active-view">
         <div class="workspace">
 
-          <div id="empty-state" style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; height:65vh; color: var(--muted); text-align:center;">
-            <svg style="width:64px;height:64px;margin-bottom:20px;opacity:0.3;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 9l3 3-3 3m5 0h3M4 15V9a2 2 0 012-2h12a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2z"/></svg>
+          <div class="dashboard-content" id="pre-run-dashboard" style="display:none; margin-bottom: 24px;">
+            <section class="panel" id="stage-resource">
+              <div class="panel-head"><div><h2>01 · Resource Monitoring</h2><div class="panel-sub">The input state used by the adaptive engine</div></div><span class="chip">Replay Input</span></div>
+              <div class="resource-grid" id="resource-grid"></div>
+            </section>
+
+            <section class="panel" id="stage-security-detail" style="margin-top:24px;">
+              <div class="panel-head"><div><h2>02 · Security Requirement</h2><div class="panel-sub">Minimum security level before resource/ML selection</div></div><span class="chip">Policy Engine</span></div>
+              <div class="security-score-box">
+                <div class="score-circle"><span id="score-circle">1.0</span></div>
+                <div>
+                  <div class="score-title" id="score-title">Low security requirement</div>
+                  <div class="muted" id="security-profile-text">Profile: LOW</div>
+                </div>
+              </div>
+              <div class="factor-list" id="factor-list"></div>
+            </section>
+          </div>
+
+          <div id="empty-state" style="grid-column: 1 / -1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 40px 0; color: var(--muted); text-align:center; height:35vh;">
+            <svg style="width:48px;height:48px;margin-bottom:20px;opacity:0.3;color:var(--accent)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 9l3 3-3 3m5 0h3M4 15V9a2 2 0 012-2h12a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2z"/></svg>
             <h3 style="font-size:24px; font-weight:600; color:var(--text); margin-bottom:8px;">System Ready</h3>
-            <p style="font-size:14px; max-width:400px; line-height:1.6;">Please select a scenario from the top bar and click <strong style="color:var(--accent)">Run Scenario</strong> to evaluate the security configuration.</p>
+            <p style="font-size:14px; max-width:400px; line-height:1.6;">Click <strong style="color:var(--accent)">Run Scenario</strong> to evaluate the security configuration for this input state.</p>
           </div>
 
           <div class="dashboard-content" id="dashboard-content" style="display:none;">
@@ -130,24 +149,6 @@
                 <div class="stat-note">Hardware-equivalent input</div>
               </div>
             </div>
-
-            <section class="panel" id="stage-resource">
-              <div class="panel-head"><div><h2>01 · Resource Monitoring</h2><div class="panel-sub">The input state used by the adaptive engine</div></div><span class="chip">Replay Input</span></div>
-              <div class="resource-grid" id="resource-grid"></div>
-            </section>
-
-            <section class="section-grid">
-              <div class="panel" id="stage-security-detail">
-                <div class="panel-head"><div><h2>02 · Security Requirement</h2><div class="panel-sub">Minimum security level before resource/ML selection</div></div><span class="chip">Policy Engine</span></div>
-                <div class="security-score-box">
-                  <div class="score-circle"><span id="score-circle">1.0</span></div>
-                  <div>
-                    <div class="score-title" id="score-title">Low security requirement</div>
-                    <div class="muted" id="security-profile-text">Profile: LOW</div>
-                  </div>
-                </div>
-                <div class="factor-list" id="factor-list"></div>
-              </div>
 
               <div class="panel" id="stage-filter">
                 <div class="panel-head"><div><h2>03 · Security Filter</h2><div class="panel-sub">Candidates below the minimum level are blocked first</div></div><span class="chip">Hard constraint</span></div>
