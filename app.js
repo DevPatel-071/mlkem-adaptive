@@ -72,7 +72,7 @@ function finalLevel(c,key){return c[`${key}_final`]}
 
 function renderCaseSelect(){
   const defaultOption = `<option value="" disabled selected>Select a Scenario...</option>`;
-  const html=CASES.map(c=>`<option value="${c.scenario_id}">${c.scenario_id} — ${friendlyName(c)}</option>`).join('');
+  const html=CASES.map(c=>`<option value="${c.scenario_id}" style="text-align:center;">${c.scenario_id}</option>`).join('');
   $('#case-select').innerHTML=defaultOption + html;
 }
 

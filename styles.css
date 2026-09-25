@@ -285,6 +285,11 @@ body {
   transition: all 0.2s ease;
 }
 
+#case-select {
+  text-align: center;
+  text-align-last: center;
+}
+
 .top-actions select:focus,
 .case-toolbar select:focus,
 .search-input:focus {
